@@ -1,0 +1,30 @@
+/**User profiles Styles*/
+.profiles-container {
+  flex-direction: column;
+  height: 100%;
+}
+
+.profiles-header {
+  font-size: 42px;
+  font-family: "Noto Sans KR", sans-serif;
+  text-decoration: underline;
+  margin-bottom: 30px;
+}
+
+.profiles-list {
+  flex-wrap: wrap;
+}
+
+.profile-card {
+  width: 250px;
+  height: 50px;
+  font-family: "Redressed", cursive;
+  font-size: 26px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  margin: 10px;
+}
+
+.profile-card:hover {
+  box-shadow: 0px 0px 10px var(--background-border-color) inset;
+}
