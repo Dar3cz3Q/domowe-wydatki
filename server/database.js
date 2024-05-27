@@ -1,5 +1,5 @@
 const sql = require("mssql");
-const config = require("./config/config");
+const { config } = require("./config/config");
 
 const connection = new sql.ConnectionPool(config.database);
 connection

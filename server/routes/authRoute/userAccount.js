@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const config = require('../../config/config')
+const { config } = require('../../config/config')
 const mssql = require('../../database')
 const { validateLoginFields, validateRegisterFields, validateUpdateFields } = require('./authFieldValidation')
 const authUser = require('../../authUser')
@@ -34,7 +34,7 @@ router.post('/login', validateLoginFields, async (req, res) => {
         const SQLQuery = `SELECT * FROM Konta WHERE Username = '${login}'`;
         let result = await mssql.request().query(SQLQuery)
         let account = result.recordset[0]
-        if(account == null) {
+        if (account == null) {
             return res.status(404).json({ message: 'Nie znaleziono użytkownika' })
         }
         bcrypt.compare(password, account.Haslo, (err, response) => {
@@ -69,7 +69,7 @@ router.post('/register', validateRegisterFields, async (req, res) => {
         res.status(201).send({ message: "Konto zostało utworzone" })
     } catch (err) {
         console.log(err)
-        if(err.number === 2627) {
+        if (err.number === 2627) {
             err.message = 'Login/Email jest już zajęty'
             return res.status(409).json({ message: err.message })
         }
@@ -95,10 +95,10 @@ router.patch('/', authUser, validateUpdateFields, async (req, res) => {
         const SQLQuery = `UPDATE Konta SET Username = '${req.body.login}', Email = '${req.body.email}' WHERE IDKonta = ${req.session.userID}`;
         await mssql.request().query(SQLQuery)
         res.clearCookie(config.cookie.cookieName)
-        res.status(200).json({ message: 'Konto zostało zaktualizowane. Za chwilę nastąpi wylogowanie'})
+        res.status(200).json({ message: 'Konto zostało zaktualizowane. Za chwilę nastąpi wylogowanie' })
     } catch (err) {
         console.log(err)
-        if(err.number === 2627) {
+        if (err.number === 2627) {
             err.message = 'Login/Email jest już zajęty'
             return res.status(409).json({ message: err.message })
         }
@@ -112,7 +112,7 @@ router.delete('/remove', authUser, async (req, res) => {
         const SQLQuery = `DELETE FROM Konta WHERE IDKonta = ${req.session.userID}`;
         await mssql.request().query(SQLQuery)
         res.clearCookie(config.cookie.cookieName)
-        res.status(200).json({ message: 'Konto zostało usunięte. Za chwilę nastąpi wylogowanie'})
+        res.status(200).json({ message: 'Konto zostało usunięte. Za chwilę nastąpi wylogowanie' })
     } catch (err) {
         res.status(500).json({ message: err.message })
     }

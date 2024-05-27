@@ -51,6 +51,7 @@ function App() {
       window.history.replaceState(null, "/", "/");
       setLoggedInStatus(result.data);
     } catch (err) {
+      console.log(err);
       if (err.response.status === 403) {
         window.location.reload();
       }
